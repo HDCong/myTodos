@@ -8,6 +8,8 @@ Link deployed to heroku: https://hdcong-todos.herokuapp.com/
 
 ### Feature
 
+* View all task storaged in DB
+
 * Add new task to DB
 
 * Mark a task is complete or not
