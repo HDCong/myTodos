@@ -1,0 +1,99 @@
+* {
+    padding: 0 auto;
+    margin: 0 auto;
+    font-family: 'Lobster', cursive;
+}
+
+body {
+    background-image: url('../img/background.jpg');
+    background-size: 100%;
+}
+
+.todolist {
+    background-color: #FFF;
+    padding: 20px 20px 10px 20px;
+    margin-top: 30px;
+    opacity: 0.95;
+}
+
+.todolist h1 {
+    margin: 0;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+#btn-add {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    line-height: 1.33;
+    border-radius: 25px;
+    background-color: darkseagreen;
+}
+
+.form-control {
+    border-radius: 200;
+    border-right-style: none;
+}
+
+li.ui-state-default {
+    display: inline-block;
+    background: #fff;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    padding: 5px;
+}
+
+li.ui-state-default:last-child {
+    border-bottom: none;
+}
+
+i.de:hover {
+    color: #af0000;
+    cursor: pointer;
+}
+
+li i {
+    float: right;
+    width: 5%;
+}
+
+li p.task-content:hover {
+    background-color: darkseagreen;
+    cursor: pointer;
+}
+
+.lineThrough {
+    text-decoration: line-through;
+    color: darkgray;
+}
+
+li p {
+    padding: 0;
+    margin: 0;
+    font-size: 20px;
+    left: 50px;
+    top: 5px;
+    background-color: #fff;
+    width: 95%;
+    display: inline-block;
+}
+
+ul li.checkedJob p {
+    /* background: #888; */
+    color: darkgrey;
+    text-decoration: line-through;
+}
+
+ul li.checkedJob::before {
+    content: '';
+    position: absolute;
+    border-color: #fff;
+    border-style: solid;
+    border-width: 0 2px 2px 0;
+    top: 10px;
+    left: 16px;
+    transform: rotate(45deg);
+    height: 15px;
+    width: 7px;
+}
