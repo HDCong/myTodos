@@ -21,7 +21,7 @@
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": { "$ref": "#/definitions/Task" }
+                        "schema": { "$ref": "#/definitions/Tasks" }
                     }
                 }
             },
@@ -51,35 +51,21 @@
         "/todolist/{id}": {
             "parameters": [{
                 "in": "path",
-                "id": "id",
+                "name": "id",
                 "required": true,
-                "description": "ID of the cat that we want to match",
-                "type": "string"
+                "description": "ID of the task that we want to match",
+                "type": "integer"
             }],
             "put": {
                 "summary": "Update task with given ID",
                 "tags": [
                     "Todo list"
                 ],
-                "requestBody": {
-                    "description": "id Object",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/definitions/Task"
-                            }
-                        }
-                    }
-                },
                 "parameters": [{
-                    "in": "path",
-                    "name": "id",
-                    "required": true,
-                    "description": "Task with new values of properties",
-                    "schema": {
-                        "$ref": "#/definitions/id"
-                    }
+                    "in": "body",
+                    "name": "body",
+                    "description": "New value",
+                    "schema": { "$ref": "#/definitions/TaskWithoutID" }
                 }],
                 "responses": {
                     "200": {
@@ -98,15 +84,6 @@
                 "tags": [
                     "Todo list"
                 ],
-                "parameters": [{
-                    "in": "path",
-                    "name": "id",
-                    "required": true,
-                    "description": "Delete task with id",
-                    "schema": {
-                        "$ref": "#/definitions/id"
-                    }
-                }],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -132,6 +109,17 @@
                 "id": {
                     "type": "integer"
                 },
+                "content": {
+                    "type": "string"
+                },
+                "isdone": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "TaskWithoutID": {
+            "type": "object",
+            "properties": {
                 "content": {
                     "type": "string"
                 },
