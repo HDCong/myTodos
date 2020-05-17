@@ -1,0 +1,154 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0,0",
+        "title": "Swagger Nodejs Express Postgres",
+        "description": "First time using Swagger"
+
+    },
+    "host": "localhost:8888",
+    "basePath": "",
+    "schemes": ["http", "https"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+        "/todolist": {
+            "get": {
+                "tags": [
+                    "Todo list"
+                ],
+                "summary": "Get all task in DB",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": { "$ref": "#/definitions/Task" }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Todo list"
+                ],
+                "summary": "Add a new task to DB",
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "description": "Task to create",
+                    "schema": { "$ref": "#/definitions/Task" }
+                }],
+                "produces": ["application/json"],
+                "responses": {
+                    "201": {
+                        "description": "OK, Return ID added",
+                        "schema": { "$ref": "#/definitions/id" }
+                    },
+                    "500": {
+                        "description": "Failed to create new task"
+                    }
+                }
+            }
+        },
+        "/todolist/{id}": {
+            "parameters": [{
+                "in": "path",
+                "id": "id",
+                "required": true,
+                "description": "ID of the cat that we want to match",
+                "type": "string"
+            }],
+            "put": {
+                "summary": "Update cat with given ID",
+                "tags": [
+                    "Todo list"
+                ],
+                "requestBody": {
+                    "description": "id Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/Task"
+                            }
+                        }
+                    }
+                },
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "description": "Task with new values of properties",
+                    "schema": {
+                        "$ref": "#/definitions/id"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/id"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to update data."
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete task with given ID",
+                "tags": [
+                    "Todo list"
+                ],
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "description": "Delete task with id",
+                    "schema": {
+                        "$ref": "#/definitions/id"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/id"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed. Task not delete."
+                    }
+                }
+            }
+        }
+    },
+
+    "definitions": {
+        "id": {
+            "type": "integer"
+        },
+        "Task": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "isdone": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "Tasks": {
+            "type": "object",
+            "properties": {
+                "task": {
+                    "type": "object",
+                    "additionalProperties": { "$ref": "#/definitions/Task" }
+                }
+            }
+        }
+    }
+
+}

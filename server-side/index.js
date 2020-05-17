@@ -1,8 +1,12 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
-const db = require('./app/queries')
+    // const db = require('./app/queries')
 const router = require('./app/routes')
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
 const PORT = process.env.PORT || 8888;
 
 
@@ -18,6 +22,8 @@ app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
     next();
 });
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 app.get('/', (req, res) => {
     res.json({ info: 'Node.js, Express, and Postgre API' })
 })

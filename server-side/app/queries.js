@@ -15,8 +15,8 @@ const addNewWork = (request, response) => {
         if (error) {
             throw error
         }
-
-        response.status(201).send(`${results.rows[0].id}`)
+        if (results.rowCount == 0) response.status(500).send('-1')
+        else response.status(201).send(`${results.rows[0].id}`)
     })
 }
 const updateWork = (request, response) => {
