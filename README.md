@@ -40,5 +40,7 @@ To get the connection URL of your Heroku Postgres: heroku config:get DATABASE_UR
 
 Use this connection URL to create the Pool will help you avoid the certificate error
 
+### Api-docs
 
+https://hdcong-todolist.herokuapp.com/api-docs
 
