@@ -6,7 +6,7 @@
         "description": "First time using Swagger"
 
     },
-    "host": "https://hdcong-todolist.herokuapp.com/",
+    "host": "hdcong-todolist.herokuapp.com",
     "basePath": "",
     "schemes": ["http", "https"],
     "consumes": ["application/json"],
