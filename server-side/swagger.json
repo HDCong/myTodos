@@ -57,7 +57,7 @@
                 "type": "string"
             }],
             "put": {
-                "summary": "Update cat with given ID",
+                "summary": "Update task with given ID",
                 "tags": [
                     "Todo list"
                 ],
