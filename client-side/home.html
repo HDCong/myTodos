@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="./css/main.css">
+
     <title>My Todos </title>
 </head>
 
@@ -25,36 +26,82 @@
                     <h1>My Todos <i class="fa fa-tasks"></i>
                     </h1>
                     <div class="input-group mb-3">
-
                         <input type="text" class="form-control" id="input-task" placeholder="Add task todo">
-
                         <div class="input-group-append">
                             <!-- <button class="btn btn-outline-secondary" id="btn-add" type="button">Add</button> -->
                             <!-- <i class="fa fa-plus-circle" style="font-size:48px;color:red"></i> -->
                             <button type="button" class="btn btn-outline-secondary" id="btn-add">
                                 <i class="fa fa-plus"></i> </button>
-
                         </div>
-
                     </div>
-
                     <hr>
-
                     <ul id="working-list" class="list-group list-group-flush list-unstyled">
+
                     </ul>
 
                 </div>
             </div>
         </div>
-
     </div>
     <!-- Optional JavaScript -->
+
+    <!-- The confirm Modal -->
+    <div class="modal fade" id="myConfirm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Are you sure to delete this task ?</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-confirmYes" data-dismiss="modal">Yes</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- The submit modal -->
+    <!-- <div class="container"> -->
+    <div class="modal fade" id="my-submit" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <h4 class="modal-title">Edit your task</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="content">Task content</label>
+                        <input type="text" class="form-control" id="new-content" placeholder="New content value">
+                    </div>
+                    <form>
+                        <input type="radio" id="done-radio" name="status" value="true" checked="checked">
+                        <label for="done-radio">Done</label><br>
+                        <input type="radio" id="notdone-radio" name="status" value="false">
+                        <label for="notdone-radio">Not done</label><br>
+                    </form>
+                </div>
+
+                <div class="modal-footer border-top-0 d-flex justify-content-center">
+                    <button type="button" class="btn btn-success btn-submit-new" data-dismiss="modal">Submit</button>
+                    <button type="button" class="btn btn-primary " id="btn-cancel-modal" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+        <!-- </div> -->
+    </div>
+
+
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js " integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n " crossorigin="anonymous "></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js " integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo " crossorigin="anonymous "></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js " integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6 " crossorigin="anonymous "></script>
-    <!-- My -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js "></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="./js/script.js " type="text/javascript "></script>
 
 </body>

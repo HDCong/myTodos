@@ -51,12 +51,29 @@ li.ui-state-default:last-child {
     border-bottom: none;
 }
 
-i.de:hover {
+i:hover {
     color: #af0000;
     cursor: pointer;
 }
 
-li i {
+
+/* 
+li i.left {
+    float: left;
+    width: 5%;
+} */
+
+li i.trash {
+    padding-left: 10px;
+    padding-top: 4px;
+    float: right;
+    width: 5%;
+}
+
+li i.edit {
+    padding-left: 5px;
+    /* padding-left: 10px; */
+    padding-top: 5px;
     float: right;
     width: 5%;
 }
@@ -78,7 +95,7 @@ li p {
     left: 50px;
     top: 5px;
     background-color: #fff;
-    width: 95%;
+    width: 90%;
     display: inline-block;
 }
 
@@ -99,4 +116,9 @@ ul li.checkedJob::before {
     transform: rotate(45deg);
     height: 15px;
     width: 7px;
+}
+
+#new-content {
+    min-width: 300px;
+    border-style: solid;
 }

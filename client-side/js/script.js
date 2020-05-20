@@ -8,26 +8,57 @@ const xhttp = new XMLHttpRequest();
 const LINE_THROUGH = 'lineThrough'
 var btnAdd = document.getElementById("btn-add")
 btnAdd.addEventListener('click', addWork)
-var flag = -1
 
+var modalConfirm = document.getElementsByClassName("modal")[0]
+var btnConfirmYes = document.getElementsByClassName("btn-confirmYes")[0]
+btnConfirmYes.addEventListener('click', confirmToRemoveTask)
+
+var isConfirmed = false
+var targetElement
+
+var btnSubmitNew = document.getElementsByClassName("btn-submit-new")[0]
+btnSubmitNew.addEventListener('click', editDataTask)
+var newEditContent = document.getElementById('new-content')
+var newEditStatus
+
+// Add listener for element
 document.addEventListener('keyup', function(ev) {
     if (ev.keyCode == 13) {
-        const taskTodo = input.value
-        if (taskTodo) {
-            addWork();
+        if (input === document.activeElement) {
+            const taskTodo = input.value
+            if (taskTodo) {
+                addWork();
+            }
+        } else if (newEditContent === document.activeElement) {
+            console.log(newEditContent.value)
+            var idTask = targetElement.attributes.id.value;
+            updateNewData(idTask, targetElement)
+            $('#btn-cancel-modal').click();
         }
-        input.value = ''
+
+    }
+})
+workingList.addEventListener('click', function(ev) {
+    targetElement = ev.target
+    var job = targetElement.attributes.job.value
+    var idTask = targetElement.attributes.id.value;
+    if (job == 'done') {
+        updateStatusData(idTask, targetElement)
+    } else if (job == 'remove') {
+        addAttributeToModal(idTask)
+    } else if (job == 'change') {
+        addAttributeToModal(idTask)
     }
 })
 
+
 loadData()
 
+// Get and render data
 function loadData() {
-
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             listTaskTodo = JSON.parse(this.responseText);
-            // console.log(listTaskTodo)
             loadList(listTaskTodo)
         }
     };
@@ -36,20 +67,16 @@ function loadData() {
 }
 
 function loadList(array) {
-    // console.log('vao load list')
     array.forEach(function(item) {
-        // console.log(item)
         addTaskTodo(item.content, item.id, item.isdone)
     });
 }
 
-// list.removeChild(list.childNodes[index])
-// ul.childNodes[index].removeChild()
+// Add new data and render
 
 function addWork() {
-    // console.log('add work')
+
     const taskTodo = input.value
-        // post request to server
     if (taskTodo) {
         postNewTaskToDB(taskTodo)
     }
@@ -74,62 +101,95 @@ function postNewTaskToDB(taskTodo) {
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.send(params);
 }
-
+// Render new data
 function addTaskTodo(taskContent, id, done) {
     // console.log(taskContent, id, done)
     var line = done ? LINE_THROUGH : ''
     var checked = done ? 'checkedJob' : ''
     var text = `<li class ="ui-state-default list-group-item-action ${checked}" id="${id}">
                     <p class ="task-content ${line}" job='done' id="${id}" >  ${taskContent} </p>
-                    <i class = "de fa fa-trash ${checked}" id="${id}" job='remove'"> </i>
+                    <i class = "trash fa fa-trash ${checked}" id="${id}" job='remove' data-toggle="modal" data-target="#myConfirm" ></i>
+                    <i class="edit fa fa-pencil-square-o" job='change' id="${id}" aria-hidden="true" data-toggle="modal" data-target="#my-submit"></i>
                 </li>
                 `
     position = 'afterbegin'
     workingList.insertAdjacentHTML(position, text)
 }
 
-workingList.addEventListener('click', function(ev) {
-    var element = ev.target
-        // console.log(element)
-    var job = element.attributes.job.value
-        // console.log('job = ', job)
-    var idTask = element.attributes.id.value;
-    if (job == 'done') {
-        // Work with server
-        // console.log(idTask)
-        changeStatusTask(idTask, element);
-        // doneTask(element)
-    } else if (job == 'remove') {
-        // Work with server
-        removeTaskFromDB(idTask, element)
-            // if (flag == idTask)
-            // removeTask(element)
-    }
-})
 
-
-function changeStatusTask(id, element) {
+// Edit data
+function editDataTask() {
+    var idTask = modalConfirm.getAttribute("id-to-handle")
+    console.log(targetElement)
+    updateNewData(idTask, targetElement)
+    modalConfirm.removeAttribute('id-to-handle')
+}
+// Update data when click icon edit: can be change content or status
+function updateNewData(id, element) {
     var taskById = listTaskTodo.find(x => x.id == id)
         // console.log(taskById)
+    var newContent = newEditContent.value
+    if (!newContent) newContent = taskById.content
+    newEditStatus = document.getElementsByName('status')[0].checked ? true : false
+    var line = newEditStatus ? LINE_THROUGH : ''
+    var text = ` <p class ="task-content ${line}" job='done' id="${id}" >  ${newContent} </p>`
+    var oldStt = taskById.isdone
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            taskById.isdone = newEditStatus
+            taskById.content = newContent
+            targetElement.parentNode.firstElementChild.innerHTML = text
+            if (oldStt != newEditStatus)
+                doneTask(element.parentNode.firstElementChild)
+            newEditContent.value = ''
+        } else if (this.readyState == 4 && this.status == 500) {
+            console.log('The server has not completed the request')
+        }
+    };
+    var params = 'content=' + newContent + '&isdone=' + newEditStatus;
+    console.log(params)
+    xhttp.open("PUT", serverUrl + '/' + id, true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.send(params);
+}
+// Update status when click p : just change status, not change content
+function updateStatusData(id, element) {
+    var taskById = listTaskTodo.find(x => x.id == id)
     var newContent = taskById.content
     var newStt = taskById.isdone ? false : true
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            // console.log('hihi' + id)
-            // Change in listTodo
             taskById.isdone = newStt
             doneTask(element)
         } else if (this.readyState == 4 && this.status == 500) {
             console.log('The server has not completed the request')
         }
     };
-    // var newContent = taskById.content
-    //var newStt = taskById.isdone ? false : true
     var params = 'content=' + newContent + '&isdone=' + newStt;
     console.log(params)
     xhttp.open("PUT", serverUrl + '/' + id, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.send(params);
+}
+
+// render new value of data
+function doneTask(element) {
+    element.parentNode.classList.toggle('checkedJob')
+    element.classList.toggle(LINE_THROUGH)
+}
+
+
+// Add id to handle modal
+function addAttributeToModal(id) {
+    modalConfirm.setAttribute('id-to-handle', id)
+}
+
+
+// Remove task 
+function confirmToRemoveTask() {
+    var idTask = modalConfirm.getAttribute("id-to-handle")
+    removeTaskFromDB(idTask, targetElement)
+    modalConfirm.removeAttribute('id-to-handle')
 }
 
 function removeTaskFromDB(id, element) {
@@ -138,7 +198,6 @@ function removeTaskFromDB(id, element) {
         if (this.readyState == 4 && this.status == 200) {
             // change in list to do
             listTaskTodo = listTaskTodo.filter(function(val) { return val.id != id })
-                // console.log(listTaskTodo)
             removeTask(element)
         } else if (this.readyState == 4 && this.status == 500) {
             console.log('The server has not completed the request')
@@ -150,19 +209,8 @@ function removeTaskFromDB(id, element) {
 }
 
 function removeTask(taskElement) {
-    // console.log('remove task')
-    // console.log(taskElement.attributes.id)
-
     taskElement.parentNode.classList.toggle('faded')
-        // console.log(taskElement.parentNode)
     $(taskElement).parent().fadeOut('slow', function() {
         taskElement.parentNode.parentNode.removeChild(taskElement.parentNode)
     })
-}
-
-function doneTask(element) {
-    // console.log('doneTask')
-    // console.log(element.attributes.id)
-    element.parentNode.classList.toggle('checkedJob')
-    element.classList.toggle(LINE_THROUGH)
 }
