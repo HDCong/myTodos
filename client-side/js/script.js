@@ -131,14 +131,12 @@ function updateNewData(id, element) {
     var newContent = newEditContent.value
     if (!newContent) newContent = taskById.content
     newEditStatus = document.getElementsByName('status')[0].checked ? true : false
-    var line = newEditStatus ? LINE_THROUGH : ''
-    var text = ` <p class ="task-content ${line}" job='done' id="${id}" >  ${newContent} </p>`
     var oldStt = taskById.isdone
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             taskById.isdone = newEditStatus
             taskById.content = newContent
-            targetElement.parentNode.firstElementChild.innerHTML = text
+            targetElement.parentNode.firstElementChild.innerHTML = newContent //parentNode.firstElementChild.
             if (oldStt != newEditStatus)
                 doneTask(element.parentNode.firstElementChild)
             newEditContent.value = ''
@@ -174,6 +172,7 @@ function updateStatusData(id, element) {
 
 // render new value of data
 function doneTask(element) {
+
     element.parentNode.classList.toggle('checkedJob')
     element.classList.toggle(LINE_THROUGH)
 }
